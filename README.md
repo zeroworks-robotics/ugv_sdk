@@ -37,6 +37,7 @@ It should also work in other similar Linux environments but only the above liste
 |       Tracer        |      -      |      Y      |   N   |   Y   |     Active     |
 | ~~Ranger Mini 1.0~~ |      -      |     Y*      |   -   |   Y   |  Discontinued  |
 |   Ranger Mini 2.0   |      -      |      Y      |   -   |   Y   |     Active     |
+|   Ranger Mini 3.0   |      -      |      Y      |   -   |   Y   |     Active     |
 |       Ranger        |      -      |      Y      |   -   |   Y   |     Active     |
 
 **Important note:** 
