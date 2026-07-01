@@ -2,6 +2,7 @@
  #define RANGER_BASE_HPP
  
  #include <cstdint>
+ #include <cmath>
  #include <mutex>
  #include <string>
  #include <thread>
@@ -100,7 +101,6 @@
    }
  };
  
- using RangerMiniV3Base = RangerBase;
  class RangerMiniV2Base : public RangerBase {
    RangerCommonSensorState GetCommonSensorState() override {
      auto common_sensor =
@@ -125,7 +125,12 @@
      return ranger_bms;
    }
  };
- 
+
+ // Ranger Mini V3 shares the same BMS voltage unit (0.01V) as Ranger Mini V2
+ // (see Ranger Mini 3.0 user manual, BMS frame 0x361), so it reuses the V2
+ // GetCommonSensorState() override that applies the extra 0.1f scaling.
+ class RangerMiniV3Base : public RangerMiniV2Base {};
+
  // Note: Ranger Mini V1 uses a modified AgileX V2 protocol
  // Here we provide a work-around fix as no new firmware will be provided from
  // AgileX to properly fix the issue.
