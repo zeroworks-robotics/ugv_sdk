@@ -31,7 +31,7 @@ struct BunkerActuatorState {
   ActuatorHSStateMessage actuator_hs_state[3];
   ActuatorLSStateMessage actuator_ls_state[3];
   // - for v1 robots only
-  ActuatorStateMessageV1 actuator_state[2];
+  ActuatorStateMessageV1 actuator_state[3];
 };
 
 struct BunkerCommonSensorState {
