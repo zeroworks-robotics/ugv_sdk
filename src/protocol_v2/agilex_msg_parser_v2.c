@@ -177,7 +177,7 @@ bool DecodeCanFrameV2(const struct can_frame *rx_frame, AgxMessage *msg) {
     case CAN_MSG_ACTUATOR8_LS_STATE_ID: {
       msg->type = AgxMsgActuatorLSState;
       ActuatorLSStateFrame *frame = (ActuatorLSStateFrame *)(rx_frame->data);
-      msg->body.actuator_hs_state_msg.motor_id =
+      msg->body.actuator_ls_state_msg.motor_id =
           rx_frame->can_id - CAN_MSG_ACTUATOR1_LS_STATE_ID;
       msg->body.actuator_ls_state_msg.driver_voltage =
           ((uint16_t)(frame->driver_voltage.low_byte) |
