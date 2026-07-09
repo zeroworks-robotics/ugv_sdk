@@ -296,6 +296,7 @@ typedef enum {
   AgxMsgMotorSpeed,
   // sensor
   AgxMsgOdometry,
+  AgxMsgRearOdometry,
   AgxMsgImuAccel,
   AgxMsgImuGyro,
   AgxMsgImuEuler,
@@ -338,6 +339,7 @@ typedef struct {
     ActuatorLSStateMessage actuator_ls_state_msg;
     // sensor
     OdometryMessage odometry_msg;
+    OdometryMessage rear_odometry_msg;
     ImuAccelMessage imu_accel_msg;
     ImuGyroMessage imu_gyro_msg;
     ImuEulerMessage imu_euler_msg;
