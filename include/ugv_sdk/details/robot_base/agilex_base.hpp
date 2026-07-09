@@ -242,7 +242,14 @@ class AgilexBase : public RobotCommonInterface {
     // clear buffer first
     version_string_buffer_.clear();
 
-    // send request msg
+    // Send the request on 0x4a1 - the same id the chassis answers on.
+    //
+    // This looks wrong next to CAN_MSG_VERSION_REQUEST_ID (0x411), but it is
+    // not. Probed on a Ranger Mini 3.0 (HW H-V1.3-1, SW S-V6.0-8250218):
+    //   4A1#01 -> eleven 8-byte frames on 0x4a1 (the version blob)
+    //   411#01 -> no answer at all
+    // The firmware uses one id for both directions. Changing this to 0x411
+    // breaks RequestVersion() on real hardware; probe before "fixing" it.
     can_frame frame;
     frame.can_id = ((uint32_t)0x4a1);
     frame.can_dlc = 1;

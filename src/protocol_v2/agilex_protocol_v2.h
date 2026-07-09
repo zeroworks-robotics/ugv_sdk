@@ -99,6 +99,12 @@ extern "C" {
 #define CAN_MSG_BMS_EXTENDED_ID ((uint32_t)0x362)
 
 // query/config group: 0x4
+// NOTE: the names below are misleading on at least one shipping firmware.
+// Probed on a Ranger Mini 3.0 (HW H-V1.3-1, SW S-V6.0-8250218): the chassis
+// accepts a version request on CAN_MSG_VERSION_RESPONSE_ID (0x4a1) and answers
+// there too, while CAN_MSG_VERSION_REQUEST_ID (0x411) is never answered. That
+// is why AgilexBase::RequestVersion() sends on 0x4a1. Other models/firmware may
+// behave differently - probe before relying on 0x411.
 #define CAN_MSG_VERSION_REQUEST_ID ((uint32_t)0x411)
 #define CAN_MSG_VERSION_RESPONSE_ID ((uint32_t)0x4a1)
 
