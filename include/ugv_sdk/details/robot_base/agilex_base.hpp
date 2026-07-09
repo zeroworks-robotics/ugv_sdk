@@ -31,6 +31,7 @@ struct CoreStateMsgGroup {
   LightStateMessage light_state;
   MotionModeStateMessage motion_mode_state;
   RcStateMessage rc_state;
+  OdometryMessage odometry;  // wheel mileage, mm (0x311)
 };
 
 struct ActuatorStateMsgGroup {
@@ -310,6 +311,14 @@ class AgilexBase : public RobotCommonInterface {
         // std::cout << "light control feedback received" << std::endl;
         core_state_msgs_.time_stamp = SdkClock::now();
         core_state_msgs_.light_state = status_msg.body.light_state_msg;
+        break;
+      }
+      case AgxMsgOdometry: {
+        // the parser decoded 0x311 but nothing used to store it, so
+        // RangerCoreState::odometry / TitanCoreState::odometry were returned
+        // uninitialised
+        core_state_msgs_.time_stamp = SdkClock::now();
+        core_state_msgs_.odometry = status_msg.body.odometry_msg;
         break;
       }
       case AgxMsgMotionModeState: {
