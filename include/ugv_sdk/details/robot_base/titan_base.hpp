@@ -41,12 +41,13 @@ class TitanBase : public AgilexBase<ProtocolV2Parser>,
   TitanCoreState GetRobotState() override {
     auto state = AgilexBase<ProtocolV2Parser>::GetRobotCoreStateMsgGroup();
 
-    TitanCoreState titan_state;
+    TitanCoreState titan_state{};
     titan_state.time_stamp = state.time_stamp;
     titan_state.system_state = state.system_state;
     titan_state.motion_state = state.motion_state;
     titan_state.rc_state = state.rc_state;
     titan_state.motion_mode_state = state.motion_mode_state;
+    titan_state.odometry = state.odometry;
 
     return titan_state;
   }

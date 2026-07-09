@@ -46,14 +46,15 @@
    RangerCoreState GetRobotState() override {
      auto state = AgilexBase<ProtocolV2Parser>::GetRobotCoreStateMsgGroup();
  
-     RangerCoreState ranger_state;
+     RangerCoreState ranger_state{};
      ranger_state.time_stamp = state.time_stamp;
      ranger_state.system_state = state.system_state;
      ranger_state.motion_state = state.motion_state;
      ranger_state.light_state = state.light_state;
      ranger_state.rc_state = state.rc_state;
      ranger_state.motion_mode_state = state.motion_mode_state;
- 
+     ranger_state.odometry = state.odometry;
+
      return ranger_state;
    }
  
@@ -163,14 +164,15 @@
    RangerCoreState GetRobotState() override {
      auto state = AgilexBase<ProtocolV2Parser>::GetRobotCoreStateMsgGroup();
  
-     RangerCoreState ranger_state;
+     RangerCoreState ranger_state{};
      ranger_state.time_stamp = state.time_stamp;
      ranger_state.system_state = state.system_state;
- 
+
      ranger_state.light_state = state.light_state;
      ranger_state.rc_state = state.rc_state;
      ranger_state.motion_mode_state = state.motion_mode_state;
- 
+     ranger_state.odometry = state.odometry;
+
      if (ranger_state.motion_mode_state.motion_mode ==
          RangerInterface::MotionMode::kSpinning) {
        ranger_state.motion_state.linear_velocity = 0;
