@@ -242,9 +242,13 @@ class AgilexBase : public RobotCommonInterface {
     // clear buffer first
     version_string_buffer_.clear();
 
-    // send request msg
+    // Send the request on the request id. 0x4a1 is the id the chassis answers
+    // on (CAN_MSG_VERSION_RESPONSE_ID), so a request sent there is never seen.
+    // The protocol header is private, hence the literal:
+    //   CAN_MSG_VERSION_REQUEST_ID  == 0x411
+    //   CAN_MSG_VERSION_RESPONSE_ID == 0x4a1
     can_frame frame;
-    frame.can_id = ((uint32_t)0x4a1);
+    frame.can_id = ((uint32_t)0x411);
     frame.can_dlc = 1;
     frame.data[0] = 0x01;
     can_->SendFrame(frame);
