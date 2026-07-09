@@ -26,7 +26,8 @@ struct RangerCoreState {
   MotionModeStateMessage motion_mode_state;
 
   RcStateMessage rc_state;
-  OdometryMessage odometry;
+  OdometryMessage odometry;       // front (0x311)
+  OdometryMessage rear_odometry;  // rear (0x312)
 };
 
 struct RangerActuatorState {

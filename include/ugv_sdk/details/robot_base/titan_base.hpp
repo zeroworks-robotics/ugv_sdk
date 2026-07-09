@@ -48,6 +48,7 @@ class TitanBase : public AgilexBase<ProtocolV2Parser>,
     titan_state.rc_state = state.rc_state;
     titan_state.motion_mode_state = state.motion_mode_state;
     titan_state.odometry = state.odometry;
+    titan_state.rear_odometry = state.rear_odometry;
 
     return titan_state;
   }

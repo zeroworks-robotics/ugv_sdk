@@ -214,6 +214,21 @@ bool DecodeCanFrameV2(const struct can_frame *rx_frame, AgxMessage *msg) {
                     (uint32_t)(frame->right_wheel.msb) << 24);
       break;
     }
+    case CAN_MSG_ODOMETRY_REAR_ID: {
+      msg->type = AgxMsgRearOdometry;
+      OdometryFrame *frame = (OdometryFrame *)(rx_frame->data);
+      msg->body.rear_odometry_msg.left_wheel =
+          (int32_t)((uint32_t)(frame->left_wheel.lsb) |
+                    (uint32_t)(frame->left_wheel.low_byte) << 8 |
+                    (uint32_t)(frame->left_wheel.high_byte) << 16 |
+                    (uint32_t)(frame->left_wheel.msb) << 24);
+      msg->body.rear_odometry_msg.right_wheel =
+          (int32_t)((uint32_t)(frame->right_wheel.lsb) |
+                    (uint32_t)(frame->right_wheel.low_byte) << 8 |
+                    (uint32_t)(frame->right_wheel.high_byte) << 16 |
+                    (uint32_t)(frame->right_wheel.msb) << 24);
+      break;
+    }
     case CAN_MSG_IMU_ACCEL_ID: {
       msg->type = AgxMsgImuAccel;
       // TODO

@@ -73,7 +73,8 @@ extern "C" {
 #define CAN_MSG_CURRENT_CTRL_MODE ((uint32_t)0x291)
 
 // sensor data group: 0x3
-#define CAN_MSG_ODOMETRY_ID ((uint32_t)0x311)
+#define CAN_MSG_ODOMETRY_ID ((uint32_t)0x311)       // front wheel mileage
+#define CAN_MSG_ODOMETRY_REAR_ID ((uint32_t)0x312)  // rear wheel mileage
 
 #define CAN_MSG_IMU_ACCEL_ID ((uint32_t)0x321)
 #define CAN_MSG_IMU_GYRO_ID ((uint32_t)0x322)

@@ -54,6 +54,7 @@
      ranger_state.rc_state = state.rc_state;
      ranger_state.motion_mode_state = state.motion_mode_state;
      ranger_state.odometry = state.odometry;
+     ranger_state.rear_odometry = state.rear_odometry;
 
      return ranger_state;
    }
@@ -172,6 +173,7 @@
      ranger_state.rc_state = state.rc_state;
      ranger_state.motion_mode_state = state.motion_mode_state;
      ranger_state.odometry = state.odometry;
+     ranger_state.rear_odometry = state.rear_odometry;
 
      if (ranger_state.motion_mode_state.motion_mode ==
          RangerInterface::MotionMode::kSpinning) {

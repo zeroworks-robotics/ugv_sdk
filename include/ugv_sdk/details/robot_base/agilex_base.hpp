@@ -31,7 +31,8 @@ struct CoreStateMsgGroup {
   LightStateMessage light_state;
   MotionModeStateMessage motion_mode_state;
   RcStateMessage rc_state;
-  OdometryMessage odometry;  // wheel mileage, mm (0x311)
+  OdometryMessage odometry;       // front wheel mileage, mm (0x311)
+  OdometryMessage rear_odometry;  // rear wheel mileage, mm (0x312)
 };
 
 struct ActuatorStateMsgGroup {
@@ -319,6 +320,11 @@ class AgilexBase : public RobotCommonInterface {
         // uninitialised
         core_state_msgs_.time_stamp = SdkClock::now();
         core_state_msgs_.odometry = status_msg.body.odometry_msg;
+        break;
+      }
+      case AgxMsgRearOdometry: {
+        core_state_msgs_.time_stamp = SdkClock::now();
+        core_state_msgs_.rear_odometry = status_msg.body.rear_odometry_msg;
         break;
       }
       case AgxMsgMotionModeState: {
