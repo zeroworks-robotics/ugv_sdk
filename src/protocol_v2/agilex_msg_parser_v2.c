@@ -602,10 +602,14 @@ bool EncodeCanFrameV2(const AgxMessage *msg, struct can_frame *tx_frame) {
     }
     /*************** query/config frame **************/
     case AgxMsgVersionRequest: {
+      // Note: AgilexBase::RequestVersion() does not go through this encoder; it
+      // builds the frame itself and sends it on 0x4a1, which is the id the
+      // chassis actually answers (see the note in agilex_protocol_v2.h).
       tx_frame->can_id = CAN_MSG_VERSION_REQUEST_ID;
       tx_frame->can_dlc = 8;
       VersionRequestFrame frame;
-      // TODO
+      memset(&frame, 0, sizeof(frame));
+      frame.request = VERSION_REQUEST_VALUE;
       memcpy(tx_frame->data, (uint8_t *)(&frame), tx_frame->can_dlc);
       break;
     }
