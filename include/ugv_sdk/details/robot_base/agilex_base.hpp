@@ -95,7 +95,7 @@ class AgilexBase : public RobotCommonInterface {
   void SetControlMode(uint8_t mode) override {
     AgxMessage msg;
     msg.type = AgxMsgControlModeConfig;
-    msg.body.control_mode_config_msg.mode = mode;
+    msg.body.control_mode_config_msg.mode = static_cast<AgxControlMode>(mode);
 
     if (can_ != nullptr && can_->IsOpened()) {
       can_frame frame;
