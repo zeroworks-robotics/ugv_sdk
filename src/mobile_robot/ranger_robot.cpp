@@ -32,6 +32,8 @@ bool RangerRobot::Connect(std::string can_name) {
 
 void RangerRobot::EnableCommandedMode() { robot_->EnableCommandedMode(); }
 
+void RangerRobot::SetControlMode(uint8_t mode) { robot_->SetControlMode(mode); }
+
 std::string RangerRobot::RequestVersion(int timeout_sec) {
   return robot_->RequestVersion(timeout_sec);
 }

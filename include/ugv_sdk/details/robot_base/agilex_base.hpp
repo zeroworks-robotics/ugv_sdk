@@ -90,6 +90,19 @@ class AgilexBase : public RobotCommonInterface {
     }
   }
 
+  // send a raw control-mode config value (CAN 0x421). Unlike EnableCommandedMode
+  // this does not force CONTROL_MODE_CAN; the caller chooses the exact value.
+  void SetControlMode(uint8_t mode) override {
+    AgxMessage msg;
+    msg.type = AgxMsgControlModeConfig;
+    msg.body.control_mode_config_msg.mode = mode;
+
+    if (can_ != nullptr && can_->IsOpened()) {
+      can_frame frame;
+      if (parser_.EncodeMessage(&msg, &frame)) can_->SendFrame(frame);
+    }
+  }
+
   // must be called at a frequency >= 50Hz
   void SendMotionCommand(double linear_vel, double angular_vel,
                          double lateral_vel, double steering_angle) {
