@@ -29,6 +29,10 @@ class RobotCommonInterface {
 
   // functions to be implemented by class AgilexBase
   virtual void EnableCommandedMode() = 0;
+  // Send a raw chassis control-mode config value (CAN 0x421). Default no-op so
+  // robots that don't implement it are unaffected; AgilexBase provides the real
+  // implementation.
+  virtual void SetControlMode(uint8_t mode) { (void)mode; }
   virtual std::string RequestVersion(int timeout_sec) = 0;
 
   // functions to be implemented by each robot class
