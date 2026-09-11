@@ -76,7 +76,19 @@ typedef struct {
   AgxVehicleState vehicle_state;
   AgxControlMode control_mode;
   float battery_voltage;
+  // Bytes [4..5] of the frame. This is the whole fault field on the V2 models
+  // whose byte [6] is reserved and byte [7] a rolling count (Scout Mini and
+  // friends), and the SYSTEM_ERROR_* masks above describe that layout.
   uint16_t error_code;
+  // Bytes [4..7] packed big-endian, byte [4] most significant. Ranger Mini 3.0
+  // spends all four bytes on the fault field - its manual calls byte [4..7] a
+  // single unsigned int32 - and puts the faults that matter in the two bytes
+  // error_code drops: the driver status and motor 5-8 comms in byte [6], and
+  // battery undervoltage, overvoltage, remote-control loss, motor 1-4 comms
+  // and the emergency stop in byte [7]. Only read this on models whose manual
+  // documents the wider field; on the others the low bytes are reserved and a
+  // counter, so the value changes every frame.
+  uint32_t error_code_full;
 } SystemStateMessage;
 
 typedef struct {
