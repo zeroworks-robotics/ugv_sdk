@@ -73,6 +73,13 @@ bool DecodeCanFrameV2(const struct can_frame *rx_frame, AgxMessage *msg) {
       msg->body.system_state_msg.error_code =
           (uint16_t)(frame->error_code.low_byte) |
           (uint16_t)(frame->error_code.high_byte) << 8;
+      // Frame bytes [4..7] as one big-endian value, for the models that spend
+      // all four on the fault field (see SystemStateMessage.error_code_full).
+      msg->body.system_state_msg.error_code_full =
+          ((uint32_t)rx_frame->data[4] << 24) |
+          ((uint32_t)rx_frame->data[5] << 16) |
+          ((uint32_t)rx_frame->data[6] << 8) |
+          (uint32_t)rx_frame->data[7];
       break;
     }
     case CAN_MSG_MOTION_STATE_ID: {

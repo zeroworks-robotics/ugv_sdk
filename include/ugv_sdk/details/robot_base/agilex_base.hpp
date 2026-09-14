@@ -360,9 +360,14 @@ class AgilexBase : public RobotCommonInterface {
 
   void UpdateActuatorState(const AgxMessage &status_msg) {
     std::lock_guard<std::mutex> guard(actuator_state_mtx_);
-    actuator_state_msgs_.time_stamp = SdkClock::now();
+    // Stamp only when this group actually carries the message. ParseCANFrame
+    // hands every decoded frame to all three updaters, so stamping before the
+    // switch marked the actuator group as updated by unrelated traffic - a
+    // system-state frame was enough - and consumers could not tell that the
+    // drivers had gone quiet while the rest of the chassis kept reporting.
     switch (status_msg.type) {
       case AgxMsgMotorAngle: {
+        actuator_state_msgs_.time_stamp = SdkClock::now();
         actuator_state_msgs_.motor_angles.angle_5 =
             status_msg.body.motor_angle_msg.angle_5;
         actuator_state_msgs_.motor_angles.angle_6 =
@@ -374,6 +379,7 @@ class AgilexBase : public RobotCommonInterface {
         break;
       }
       case AgxMsgMotorSpeed: {
+        actuator_state_msgs_.time_stamp = SdkClock::now();
         actuator_state_msgs_.motor_speeds.speed_1 =
             status_msg.body.motor_speed_msg.speed_1;
         actuator_state_msgs_.motor_speeds.speed_2 =
@@ -385,6 +391,7 @@ class AgilexBase : public RobotCommonInterface {
         break;
       }
       case AgxMsgActuatorHSState: {
+        actuator_state_msgs_.time_stamp = SdkClock::now();
         // std::cout << "actuator hs feedback received" << std::endl;
         actuator_state_msgs_
             .actuator_hs_state[status_msg.body.actuator_hs_state_msg.motor_id] =
@@ -392,6 +399,7 @@ class AgilexBase : public RobotCommonInterface {
         break;
       }
       case AgxMsgActuatorLSState: {
+        actuator_state_msgs_.time_stamp = SdkClock::now();
         // std::cout << "actuator ls feedback received" << std::endl;
         actuator_state_msgs_
             .actuator_ls_state[status_msg.body.actuator_ls_state_msg.motor_id] =
@@ -399,6 +407,7 @@ class AgilexBase : public RobotCommonInterface {
         break;
       }
       case AgxMsgActuatorStateV1: {
+        actuator_state_msgs_.time_stamp = SdkClock::now();
         // std::cout << "actuator v1 feedback received" << std::endl;
         actuator_state_msgs_
             .actuator_state[status_msg.body.v1_actuator_state_msg.motor_id] =
