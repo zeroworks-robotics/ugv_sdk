@@ -17,6 +17,7 @@
 #include <linux/can.h>
 
 #include <iostream>
+#include <thread>
 
 namespace westonrobot {
 AsyncCAN::AsyncCAN(std::string can_port)
@@ -83,7 +84,14 @@ bool AsyncCAN::Open() {
 
 void AsyncCAN::Close() {
   io_context_.stop();
-  if (io_thread_.joinable()) io_thread_.join();
+  // Never join the io thread from inside itself: that is EDEADLK, which asio
+  // surfaces as std::system_error, and with nothing catching it the process
+  // aborts. The read handler runs on this thread and closes the port when the
+  // interface goes away, so this path is reached from both threads.
+  if (io_thread_.joinable() &&
+      io_thread_.get_id() != std::this_thread::get_id()) {
+    io_thread_.join();
+  }
   io_context_.reset();
   
   // release port fd
@@ -109,7 +117,12 @@ void AsyncCAN::ReadFromPort(struct can_frame &rec_frame,
       asio::buffer(&rec_frame, sizeof(rec_frame)),
       [sthis](asio::error_code error, size_t bytes_transferred) {
         if (error) {
-          sthis->Close();
+          // Runs on the io thread. Stop the read chain and mark the port down;
+          // the owner releases the descriptor in Close() or the destructor.
+          // Calling Close() here used to abort the process (see Close()).
+          std::cerr << "CAN read failed on " << sthis->port_ << ": "
+                    << error.message() << std::endl;
+          sthis->port_opened_ = false;
           return;
         }
 
